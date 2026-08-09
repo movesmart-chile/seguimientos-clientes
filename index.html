@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -375,9 +376,11 @@
       min-height:20px;
       font-size:13px;
       font-weight:800;
-      color:var(--green);
       text-align:right;
     }
+    .save-msg.ok{color:var(--green)}
+    .save-msg.error{color:#b91c1c}
+    button:disabled{opacity:.65;cursor:not-allowed}
 
     @media(max-width:640px){
       .app{padding:16px 10px 30px}
@@ -709,9 +712,7 @@
       const respuestas = {};
 
       textareas.forEach(
-        t =>
-          respuestas[t.dataset.q] =
-            t.value.trim()
+        t => respuestas[t.dataset.q] = t.value.trim()
       );
 
       const molestiasRadio =
@@ -720,26 +721,27 @@
         );
 
       return {
-        cliente:cliente.value,
-        fecha:new Date().toISOString(),
-        molestias_cambio:
-          molestiasRadio
-            ? molestiasRadio.value
-            : "",
-        respuestas
+        cliente: cliente.value,
+        fecha: new Date().toISOString(),
+        estado_general: respuestas["1"] || "",
+        cambio_molestias: molestiasRadio ? molestiasRadio.value : "",
+        detalle_molestias: respuestas["2"] || "",
+        ejercicios_problematicos: respuestas["3"] || "",
+        mejoras_semana: respuestas["4"] || "",
+        ajustes_proxima_semana: respuestas["5"] || ""
       };
     }
 
     function saveDraft(){
+      const data = collect();
+
       localStorage.setItem(
         storageKey(),
-        JSON.stringify(
-          collect()
-        )
+        JSON.stringify(data)
       );
 
-      saveMsg.textContent =
-        "✓ Borrador guardado en este navegador";
+      saveMsg.className = "save-msg ok";
+      saveMsg.textContent = "✓ Borrador guardado en este navegador";
 
       setTimeout(
         () => saveMsg.textContent = "",
@@ -768,29 +770,35 @@
       if(!raw) return;
 
       try{
-        const d =
-          JSON.parse(raw);
+        const d = JSON.parse(raw);
 
-        textareas.forEach(
-          t => {
-            t.value =
-              d?.respuestas?.[
-                t.dataset.q
-              ] || "";
-          }
-        );
+        document.querySelector('textarea[data-q="1"]').value =
+          d.estado_general || "";
 
-        if(d?.molestias_cambio){
+        document.querySelector('textarea[data-q="2"]').value =
+          d.detalle_molestias || "";
+
+        document.querySelector('textarea[data-q="3"]').value =
+          d.ejercicios_problematicos || "";
+
+        document.querySelector('textarea[data-q="4"]').value =
+          d.mejoras_semana || "";
+
+        document.querySelector('textarea[data-q="5"]').value =
+          d.ajustes_proxima_semana || "";
+
+        if(d.cambio_molestias){
           const radio =
             document.querySelector(
-              `input[name="molestias_cambio"][value="${d.molestias_cambio}"]`
+              `input[name="molestias_cambio"][value="${d.cambio_molestias}"]`
             );
 
-          if(radio){
-            radio.checked = true;
-          }
+          if(radio) radio.checked = true;
         }
-      }catch(e){}
+
+      }catch(error){
+        console.error(error);
+      }
     }
 
     function renderFinalSummary(){
@@ -798,50 +806,113 @@
 
       const d = collect();
 
+      const respuestas = {
+        1:d.estado_general,
+        2:d.detalle_molestias,
+        3:d.ejercicios_problematicos,
+        4:d.mejoras_semana,
+        5:d.ajustes_proxima_semana
+      };
+
       Object.entries(QUESTIONS)
-        .forEach(
-          ([q,question]) => {
-            const answer =
-              d.respuestas[q] || "";
+        .forEach(([q,question]) => {
 
-            const item =
-              document.createElement(
-                "div"
-              );
+          const answer =
+            respuestas[q] || "";
 
-            item.className =
-              "final-item";
+          const item =
+            document.createElement("div");
 
-            let extra = "";
+          item.className = "final-item";
 
-            if(q === "2" && d.molestias_cambio){
-              extra =
-                `<strong>${d.molestias_cambio}</strong>${answer ? " · " : ""}`;
-            }
+          let extra = "";
 
-            item.innerHTML = `
-              <div class="final-q">${q}. ${question}</div>
-              <div class="final-a ${answer || extra ? "" : "empty"}">
-                ${extra}${answer || (!extra ? "Sin notas registradas" : "")}
-              </div>
-            `;
-
-            finalSummary
-              .appendChild(item);
+          if(q === "2" && d.cambio_molestias){
+            extra =
+              `<strong>${d.cambio_molestias}</strong>${answer ? " · " : ""}`;
           }
-        );
+
+          item.innerHTML = `
+            <div class="final-q">${q}. ${question}</div>
+            <div class="final-a ${answer || extra ? "" : "empty"}">
+              ${extra}${answer || (!extra ? "Sin notas registradas" : "")}
+            </div>
+          `;
+
+          finalSummary.appendChild(item);
+        });
     }
 
-    function finish(){
+    async function finish(){
       const data = collect();
 
-      localStorage.setItem(
-        storageKey(),
-        JSON.stringify(data)
-      );
+      finishBtn.disabled = true;
+      backBtn.disabled = true;
+      saveDraftBtn.disabled = true;
 
-      saveMsg.textContent =
-        `✓ Semana de ${data.cliente} guardada en este navegador`;
+      finishBtn.textContent = "Guardando…";
+      saveMsg.className = "save-msg";
+      saveMsg.textContent = "Enviando seguimiento a Google Sheets...";
+
+      try{
+        const response =
+          await fetch(
+            API_URL,
+            {
+              method:"POST",
+              headers:{
+                "Content-Type":
+                  "text/plain;charset=utf-8"
+              },
+              body:JSON.stringify(data)
+            }
+          );
+
+        const result =
+          await response.json();
+
+        if(
+          !response.ok ||
+          result.ok !== true
+        ){
+          throw new Error(
+            result.error ||
+            "No se pudo guardar el seguimiento"
+          );
+        }
+
+        localStorage.setItem(
+          storageKey(),
+          JSON.stringify(data)
+        );
+
+        saveMsg.className =
+          "save-msg ok";
+
+        saveMsg.textContent =
+          `✓ Seguimiento semanal de ${data.cliente} guardado en Google Sheets`;
+
+        finishBtn.textContent =
+          "Guardado ✓";
+
+      }catch(error){
+        console.error(error);
+
+        saveMsg.className =
+          "save-msg error";
+
+        saveMsg.textContent =
+          error.message ||
+          "No se pudo guardar. Inténtalo nuevamente.";
+
+        finishBtn.textContent =
+          "Guardar semana";
+
+      }finally{
+        finishBtn.disabled = false;
+        backBtn.disabled = false;
+        saveDraftBtn.disabled = false;
+      }
     }
 
     nextBtn.addEventListener(
