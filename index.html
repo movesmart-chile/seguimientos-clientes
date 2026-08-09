@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MoveSmart · Seguimiento paso a paso</title>
+  <title>MoveSmart · Seguimiento semanal</title>
   <style>
     :root{
       --bg:#f6f7f9;
@@ -60,9 +59,7 @@
       padding:7px 10px;
     }
 
-    .progress-wrap{
-      margin-bottom:18px;
-    }
+    .progress-wrap{margin-bottom:18px}
 
     .progress-top{
       display:flex;
@@ -84,7 +81,7 @@
 
     .progress > div{
       height:100%;
-      width:12.5%;
+      width:25%;
       background:var(--orange);
       border-radius:999px;
       transition:width .25s ease;
@@ -101,16 +98,12 @@
       flex-direction:column;
     }
 
-    .step{
-      display:none;
-      animation:fade .2s ease;
-    }
-
+    .step{display:none;animation:fade .2s ease}
     .step.active{display:block}
 
     @keyframes fade{
-      from{opacity:.4; transform:translateY(4px)}
-      to{opacity:1; transform:none}
+      from{opacity:.4;transform:translateY(4px)}
+      to{opacity:1;transform:none}
     }
 
     .eyebrow{
@@ -122,11 +115,7 @@
       margin-bottom:8px;
     }
 
-    h1,h2{
-      margin:0 0 8px;
-      letter-spacing:-.03em;
-    }
-
+    h1,h2{margin:0 0 8px;letter-spacing:-.03em}
     h1{font-size:30px}
     h2{font-size:26px}
 
@@ -137,7 +126,7 @@
       max-width:700px;
     }
 
-    select, textarea{
+    select,textarea{
       width:100%;
       border:1px solid var(--line);
       border-radius:14px;
@@ -147,50 +136,19 @@
       outline:none;
     }
 
-    select{
-      padding:13px 14px;
-      font-size:15px;
-    }
+    select{padding:13px 14px;font-size:15px}
 
     textarea{
-      min-height:115px;
+      min-height:108px;
       resize:vertical;
       padding:14px;
       line-height:1.5;
       background:#fbfbfc;
     }
 
-    textarea:focus, select:focus{
+    textarea:focus,select:focus{
       border-color:#fdba74;
       box-shadow:0 0 0 4px rgba(249,115,22,.08);
-    }
-
-    .question{
-      margin-top:20px;
-      padding:18px;
-      border:1px solid #eef0f2;
-      border-radius:16px;
-      background:#fff;
-    }
-
-    .qnum{
-      display:inline-grid;
-      place-items:center;
-      width:28px;
-      height:28px;
-      border-radius:9px;
-      background:var(--orange-soft);
-      color:#c2410c;
-      font-size:13px;
-      font-weight:900;
-      margin-right:8px;
-      vertical-align:middle;
-    }
-
-    .qtext{
-      font-weight:800;
-      line-height:1.45;
-      margin-bottom:12px;
     }
 
     .summary-card{
@@ -230,16 +188,119 @@
       font-weight:650;
     }
 
-    .focus{
+    .mini-stats{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
       margin-top:12px;
-      padding:13px 14px;
-      background:var(--orange-soft);
-      color:#9a3412;
-      border:1px solid #fed7aa;
-      border-radius:14px;
-      line-height:1.45;
+    }
+
+    .mini-stat{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px;
+      text-align:center;
+    }
+
+    .mini-stat b{
+      display:block;
+      font-size:18px;
+      margin-bottom:3px;
+    }
+
+    .mini-stat span{
+      color:var(--muted);
+      font-size:11px;
+      font-weight:700;
+    }
+
+    .comments-box{
+      margin-top:14px;
+      display:grid;
+      gap:8px;
+    }
+
+    .comment-chip{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:11px 12px;
       font-size:13px;
-      font-weight:650;
+      line-height:1.45;
+      color:#4b5563;
+    }
+
+    .api-status{
+      margin-top:12px;
+      font-size:13px;
+      font-weight:750;
+      color:var(--muted);
+    }
+
+    .api-status.ok{color:var(--green)}
+    .api-status.error{color:#b91c1c}
+
+    .question{
+      margin-top:18px;
+      padding:18px;
+      border:1px solid #eef0f2;
+      border-radius:16px;
+      background:#fff;
+    }
+
+    .qnum{
+      display:inline-grid;
+      place-items:center;
+      width:28px;
+      height:28px;
+      border-radius:9px;
+      background:var(--orange-soft);
+      color:#c2410c;
+      font-size:13px;
+      font-weight:900;
+      margin-right:8px;
+      vertical-align:middle;
+    }
+
+    .qtext{
+      font-weight:800;
+      line-height:1.45;
+      margin-bottom:12px;
+    }
+
+    .choices{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .choice{position:relative}
+
+    .choice input{
+      position:absolute;
+      opacity:0;
+      pointer-events:none;
+    }
+
+    .choice span{
+      min-height:48px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px;
+      border-radius:13px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-weight:800;
+      cursor:pointer;
+      text-align:center;
+    }
+
+    .choice input:checked + span{
+      color:#c2410c;
+      border-color:#fdba74;
+      background:var(--orange-soft);
     }
 
     .final-grid{
@@ -318,57 +379,42 @@
       text-align:right;
     }
 
-
-    .api-status{margin-top:12px;font-size:13px;font-weight:750;color:var(--muted)}
-    .api-status.ok{color:var(--green)}
-    .api-status.error{color:#b91c1c}
-    .comments-box{margin-top:12px;display:grid;gap:8px}
-    .comment-chip{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:13px;line-height:1.45;color:#4b5563}
-    .mini-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
-    .mini-stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
-    .mini-stat b{display:block;font-size:18px;margin-bottom:3px}
-    .mini-stat span{color:var(--muted);font-size:11px;font-weight:700}
-
     @media(max-width:640px){
       .app{padding:16px 10px 30px}
-      .card{padding:20px; min-height:560px}
+      .card{padding:20px;min-height:560px}
       h1{font-size:26px}
       h2{font-size:23px}
       .summary-grid{grid-template-columns:1fr}
       .mini-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .choices{grid-template-columns:1fr}
       .actions{flex-direction:column}
-      .right-actions{width:100%; margin-left:0}
-      .right-actions button, .actions > button{flex:1}
+      .right-actions{width:100%;margin-left:0}
+      .right-actions button,.actions>button{flex:1}
     }
   </style>
 </head>
-
 <body>
   <main class="app">
-
     <div class="topbar">
       <div class="brand">Move<span>Smart</span></div>
-      <div class="badge">Uso interno</div>
+      <div class="badge">Seguimiento semanal · Uso interno</div>
     </div>
 
     <div class="progress-wrap">
       <div class="progress-top">
-        <span id="stepLabel">Paso 1 de 8</span>
+        <span id="stepLabel">Paso 1 de 4</span>
         <span id="stepName">Cliente</span>
       </div>
-      <div class="progress">
-        <div id="progressBar"></div>
-      </div>
+      <div class="progress"><div id="progressBar"></div></div>
     </div>
 
     <section class="card">
 
-      <!-- PASO 1 -->
       <div class="step active" data-step="0">
         <div class="eyebrow">Inicio</div>
-        <h1>Seguimiento profesional</h1>
+        <h1>Seguimiento semanal</h1>
         <p class="intro">
-          Selecciona al cliente y revisa su contexto antes de comenzar la conversación.
+          Selecciona al cliente y revisa rápidamente lo que ocurrió en sus sesiones antes de conversar.
         </p>
 
         <select id="cliente">
@@ -378,134 +424,95 @@
         </select>
 
         <div class="summary-card">
-          <strong>Resumen previo</strong>
+          <strong>Resumen de registros</strong>
+
           <div class="summary-grid">
             <div class="summary-item">
-              <div class="label">Antecedentes</div>
-              <div class="value" id="sumAntecedentes"></div>
+              <div class="label">Molestia más frecuente</div>
+              <div class="value" id="sumMolestias">Cargando...</div>
             </div>
+
             <div class="summary-item">
-              <div class="label">Molestia principal</div>
-              <div class="value" id="sumMolestias"></div>
-            </div>
-            <div class="summary-item">
-              <div class="label">Dificultades repetidas</div>
-              <div class="value" id="sumDificultades"></div>
-            </div>
-            <div class="summary-item">
-              <div class="label">Señales positivas</div>
-              <div class="value" id="sumPositivo"></div>
+              <div class="label">Estado de dolor</div>
+              <div class="value" id="sumDolor">Cargando...</div>
             </div>
           </div>
+
           <div class="mini-stats">
             <div class="mini-stat"><b id="statSesiones">—</b><span>sesiones</span></div>
             <div class="mini-stat"><b id="statEsfuerzo">—</b><span>esfuerzo prom.</span></div>
             <div class="mini-stat"><b id="statSensacion">—</b><span>sensación</span></div>
             <div class="mini-stat"><b id="statModo">—</b><span>modo frecuente</span></div>
           </div>
-          <div class="focus" id="sumFoco"></div>
+
           <div class="comments-box" id="commentsBox"></div>
           <div class="api-status" id="apiStatus"></div>
         </div>
       </div>
 
-      <!-- PASO 2 -->
       <div class="step" data-step="1">
-        <div class="eyebrow">Evolución</div>
-        <h2>¿Cómo ha ido el proceso?</h2>
-        <p class="intro">Busca primero la percepción global y los cambios que la persona reconoce.</p>
+        <div class="eyebrow">Conversación</div>
+        <h2>¿Cómo estuvo la semana?</h2>
+        <p class="intro">
+          Registra solo lo que necesitas para tomar decisiones sobre la próxima semana.
+        </p>
 
         <div class="question">
-          <div class="qtext"><span class="qnum">1</span>¿Cómo te has sentido en general desde que comenzaste el programa?</div>
-          <textarea data-q="1" placeholder="Escribe tus notas..."></textarea>
+          <div class="qtext"><span class="qnum">1</span>¿Cómo te sentiste esta semana en general?</div>
+          <textarea data-q="1" placeholder="Resumen breve de cómo se sintió..."></textarea>
         </div>
 
         <div class="question">
-          <div class="qtext"><span class="qnum">2</span>¿Qué cambios positivos has notado, aunque sean pequeños?</div>
-          <textarea data-q="2" placeholder="Escribe tus notas..."></textarea>
+          <div class="qtext"><span class="qnum">2</span>Comparado con la semana anterior, ¿cómo estuvieron tus molestias?</div>
+
+          <div class="choices">
+            <label class="choice">
+              <input type="radio" name="molestias_cambio" value="Mejor">
+              <span>🙂 Mejor</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="molestias_cambio" value="Igual">
+              <span>😐 Igual</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="molestias_cambio" value="Peor">
+              <span>🙁 Peor</span>
+            </label>
+          </div>
+
+          <textarea data-q="2" placeholder="Si necesitas, agrega una nota sobre las molestias..." style="margin-top:10px;"></textarea>
+        </div>
+
+        <div class="question">
+          <div class="qtext"><span class="qnum">3</span>¿Hubo algún ejercicio que te molestara, costara o generara inseguridad?</div>
+          <textarea data-q="3" placeholder="Ejercicio, movimiento o situación..."></textarea>
         </div>
       </div>
 
-      <!-- PASO 3 -->
       <div class="step" data-step="2">
-        <div class="eyebrow">Síntomas</div>
-        <h2>¿Qué pasa con las molestias?</h2>
-        <p class="intro">Compara con el inicio y detecta cuándo aparecen los síntomas.</p>
+        <div class="eyebrow">Próxima semana</div>
+        <h2>¿Qué debemos mantener o ajustar?</h2>
+        <p class="intro">
+          Busca una señal de progreso y deja claro qué vas a modificar o vigilar.
+        </p>
 
         <div class="question">
-          <div class="qtext"><span class="qnum">3</span>Comparado con el inicio, ¿cómo están hoy tus principales molestias?</div>
-          <textarea data-q="3" placeholder="Ej.: cadera, rodilla, rigidez, dolor..."></textarea>
+          <div class="qtext"><span class="qnum">4</span>¿Notaste alguna mejora en tu día a día esta semana?</div>
+          <textarea data-q="4" placeholder="Caminar, trabajar, escaleras, estabilidad, confianza, energía..."></textarea>
         </div>
 
         <div class="question">
-          <div class="qtext"><span class="qnum">4</span>¿Cuándo aparecen más esas molestias y qué actividades las provocan?</div>
-          <textarea data-q="4" placeholder="Ej.: de pie, caminando, escaleras, después de entrenar..."></textarea>
+          <div class="qtext"><span class="qnum">5</span>¿Qué deberíamos ajustar para la próxima semana?</div>
+          <textarea data-q="5" placeholder="Carga, ejercicio, duración, frecuencia o algo a observar..."></textarea>
         </div>
       </div>
 
-      <!-- PASO 4 -->
       <div class="step" data-step="3">
-        <div class="eyebrow">Función</div>
-        <h2>¿Ha cambiado su vida diaria?</h2>
-        <p class="intro">Busca mejoras funcionales, no solo cambios en la escala de dolor.</p>
-
-        <div class="question">
-          <div class="qtext"><span class="qnum">5</span>¿Hay alguna actividad de tu vida diaria que ahora puedas hacer con mayor facilidad?</div>
-          <textarea data-q="5" placeholder="Caminar, levantarse, escaleras, trabajar, agacharse..."></textarea>
-        </div>
-      </div>
-
-      <!-- PASO 5 -->
-      <div class="step" data-step="4">
-        <div class="eyebrow">Ejercicios y confianza</div>
-        <h2>¿Qué movimientos siguen costando?</h2>
-        <p class="intro">Identifica ejercicios problemáticos y cómo se siente al moverse.</p>
-
-        <div class="question">
-          <div class="qtext"><span class="qnum">6</span>¿Qué ejercicios te han resultado más difíciles, molestos o te generan inseguridad?</div>
-          <textarea data-q="6" placeholder="Ejercicios o movimientos específicos..."></textarea>
-        </div>
-
-        <div class="question">
-          <div class="qtext"><span class="qnum">7</span>¿Sientes que tienes más confianza para moverte que cuando comenzaste?</div>
-          <textarea data-q="7" placeholder="Describe cambios en seguridad y confianza..."></textarea>
-        </div>
-      </div>
-
-      <!-- PASO 6 -->
-      <div class="step" data-step="5">
-        <div class="eyebrow">Adherencia</div>
-        <h2>¿Qué tan fácil ha sido seguir?</h2>
-        <p class="intro">Aquí puedes detectar barreras y oportunidades para que continúe.</p>
-
-        <div class="question">
-          <div class="qtext"><span class="qnum">8</span>¿Cómo te ha resultado incorporar las rutinas a tu semana?</div>
-          <textarea data-q="8" placeholder="Tiempo, energía, frecuencia, organización..."></textarea>
-        </div>
-
-        <div class="question">
-          <div class="qtext"><span class="qnum">9</span>¿Hay algo del programa que cambiarías para que te resulte más fácil seguirlo?</div>
-          <textarea data-q="9" placeholder="Duración, días, ejercicios, plataforma, formato..."></textarea>
-        </div>
-      </div>
-
-      <!-- PASO 7 -->
-      <div class="step" data-step="6">
-        <div class="eyebrow">Próximo objetivo</div>
-        <h2>¿Qué debería mejorar ahora?</h2>
-        <p class="intro">Termina la conversación dejando un objetivo concreto para el siguiente período.</p>
-
-        <div class="question">
-          <div class="qtext"><span class="qnum">10</span>¿Qué te gustaría conseguir o mejorar durante las próximas cuatro semanas?</div>
-          <textarea data-q="10" placeholder="Objetivo principal del próximo período..."></textarea>
-        </div>
-      </div>
-
-      <!-- PASO 8 -->
-      <div class="step" data-step="7">
         <div class="eyebrow">Resumen</div>
-        <h2>Seguimiento completado</h2>
-        <p class="intro">Revisa tus notas antes de guardar.</p>
+        <h2>Semana lista</h2>
+        <p class="intro">
+          Revisa tus notas antes de guardar el seguimiento.
+        </p>
 
         <div class="final-grid" id="finalSummary"></div>
         <div class="save-msg" id="saveMsg"></div>
@@ -517,253 +524,357 @@
         <div class="right-actions">
           <button class="btn-secondary" id="saveDraftBtn">Guardar borrador</button>
           <button class="btn-primary" id="nextBtn">Siguiente</button>
-          <button class="btn-success" id="finishBtn" style="display:none;">Guardar seguimiento</button>
+          <button class="btn-success" id="finishBtn" style="display:none;">Guardar semana</button>
         </div>
       </div>
 
     </section>
   </main>
 
-<script>
-  const steps = [...document.querySelectorAll('.step')];
-  const textareas = [...document.querySelectorAll('textarea[data-q]')];
-  const cliente = document.getElementById('cliente');
-  const backBtn = document.getElementById('backBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const finishBtn = document.getElementById('finishBtn');
-  const saveDraftBtn = document.getElementById('saveDraftBtn');
-  const progressBar = document.getElementById('progressBar');
-  const stepLabel = document.getElementById('stepLabel');
-  const stepName = document.getElementById('stepName');
-  const finalSummary = document.getElementById('finalSummary');
-  const saveMsg = document.getElementById('saveMsg');
+  <script>
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycbyonDxWQ6JGkfpKwi9w1jcmgplf3r4thl9P-OLD1tYLkn6iScugLyie-BcUXq0Jrq9C/exec";
 
-  let current = 0;
+    const steps = [...document.querySelectorAll(".step")];
+    const textareas = [...document.querySelectorAll("textarea[data-q]")];
+    const cliente = document.getElementById("cliente");
+    const backBtn = document.getElementById("backBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const finishBtn = document.getElementById("finishBtn");
+    const saveDraftBtn = document.getElementById("saveDraftBtn");
+    const progressBar = document.getElementById("progressBar");
+    const stepLabel = document.getElementById("stepLabel");
+    const stepName = document.getElementById("stepName");
+    const finalSummary = document.getElementById("finalSummary");
+    const saveMsg = document.getElementById("saveMsg");
 
-  const stepNames = [
-    'Cliente',
-    'Evolución',
-    'Síntomas',
-    'Función',
-    'Ejercicios',
-    'Adherencia',
-    'Objetivo',
-    'Resumen'
-  ];
+    let current = 0;
 
-  const QUESTIONS = {
-    1:'¿Cómo te has sentido en general desde que comenzaste el programa?',
-    2:'¿Qué cambios positivos has notado, aunque sean pequeños?',
-    3:'Comparado con el inicio, ¿cómo están hoy tus principales molestias?',
-    4:'¿Cuándo aparecen más esas molestias y qué actividades las provocan?',
-    5:'¿Hay alguna actividad de tu vida diaria que ahora puedas hacer con mayor facilidad?',
-    6:'¿Qué ejercicios te han resultado más difíciles, molestos o te generan inseguridad?',
-    7:'¿Sientes que tienes más confianza para moverte que cuando comenzaste?',
-    8:'¿Cómo te ha resultado incorporar las rutinas a tu semana?',
-    9:'¿Hay algo del programa que cambiarías para que te resulte más fácil seguirlo?',
-    10:'¿Qué te gustaría conseguir o mejorar durante las próximas cuatro semanas?'
-  };
+    const stepNames = [
+      "Cliente",
+      "Conversación",
+      "Próxima semana",
+      "Resumen"
+    ];
 
-  const API_URL = "https://script.google.com/macros/s/AKfycbyonDxWQ6JGkfpKwi9w1jcmgplf3r4thl9P-OLD1tYLkn6iScugLyie-BcUXq0Jrq9C/exec";
-
-  const FALLBACK_CLIENTES = {
-    "Juany Flores": {
-      antecedentes:"50 años. 3 cirugías de rodilla y 1 operación de cadera izquierda. Trabaja gran parte del día de pie."
-    },
-    "Juan Ugalde": {
-      antecedentes:"Resumen pendiente de cargar desde evaluación inicial."
-    },
-    "Dixie Acosta": {
-      antecedentes:"Resumen pendiente de cargar desde evaluación inicial."
-    }
-  };
-
-  function storageKey(){
-    return 'movesmart-seguimiento-' + cliente.value.toLowerCase().replace(/\s+/g,'-');
-  }
-
-  async function renderClient(){
-    const apiStatus = document.getElementById('apiStatus');
-    const commentsBox = document.getElementById('commentsBox');
-
-    document.getElementById('sumAntecedentes').textContent =
-      FALLBACK_CLIENTES[cliente.value]?.antecedentes || 'Sin antecedentes cargados';
-
-    document.getElementById('sumMolestias').textContent = 'Cargando...';
-    document.getElementById('sumDificultades').textContent = 'Cargando...';
-    document.getElementById('sumPositivo').textContent = 'Cargando...';
-    document.getElementById('sumFoco').textContent = '';
-    document.getElementById('statSesiones').textContent = '—';
-    document.getElementById('statEsfuerzo').textContent = '—';
-    document.getElementById('statSensacion').textContent = '—';
-    document.getElementById('statModo').textContent = '—';
-    commentsBox.innerHTML = '';
-    apiStatus.className = 'api-status';
-    apiStatus.textContent = 'Cargando datos reales del cliente...';
-
-    try{
-      const url = `${API_URL}?accion=resumenSeguimiento&cliente=${encodeURIComponent(cliente.value)}`;
-      const response = await fetch(url);
-      const data = await response.json();
-
-      if(!data.ok){
-        throw new Error(data.error || 'Error al consultar los datos');
-      }
-
-      const r = data.resumen || {};
-      const comentarios = Array.isArray(r.comentariosRecientes) ? r.comentariosRecientes : [];
-
-      document.getElementById('sumMolestias').textContent =
-        r.zonaPreviaMasFrecuente || r.zonaMasFrecuente || 'Sin datos suficientes';
-
-      const dificultades = [];
-      const texto = comentarios.join(' ').toLowerCase();
-
-      if(texto.includes('equilibr')) dificultades.push('Equilibrio / apoyo a una pierna');
-      if(texto.includes('cadera') && texto.includes('piso')) dificultades.push('Ejercicios de cadera en el suelo');
-      if(texto.includes('elongacion') || texto.includes('estiramiento')) dificultades.push('Elongación / estiramiento');
-      if(texto.includes('bicicleta')) dificultades.push('Ajuste de intensidad en bicicleta');
-
-      document.getElementById('sumDificultades').textContent =
-        dificultades.length ? dificultades.join(' · ') : 'No se detectaron dificultades repetidas';
-
-      const positivos = [];
-      comentarios.forEach(c => {
-        const lc = String(c).toLowerCase();
-        if(lc.includes('más estable') || lc.includes('mas estable')) positivos.push('Mayor estabilidad');
-        if(lc.includes('menos molestia')) positivos.push('Menor molestia en algunas sesiones');
-        if(lc.includes('mejor que mi primera')) positivos.push('Mejor percepción respecto a la primera sesión');
-      });
-
-      document.getElementById('sumPositivo').textContent =
-        [...new Set(positivos)].join(' · ') ||
-        `Sensación más frecuente: ${r.sensacionMasFrecuente || 'sin datos'}`;
-
-      document.getElementById('statSesiones').textContent = r.sesiones ?? '—';
-      document.getElementById('statEsfuerzo').textContent = r.esfuerzoPromedio ?? '—';
-      document.getElementById('statSensacion').textContent = r.sensacionMasFrecuente || '—';
-      document.getElementById('statModo').textContent = r.modoMasFrecuente || '—';
-
-      const foco = [];
-      if(r.zonaMasFrecuente) foco.push(`evolución de ${r.zonaMasFrecuente.toLowerCase()}`);
-      if(dificultades.some(x => x.toLowerCase().includes('equilibrio'))) foco.push('confianza y equilibrio');
-      foco.push('objetivo de las próximas 4 semanas');
-
-      document.getElementById('sumFoco').textContent =
-        'Foco sugerido para la conversación: ' + foco.join(', ') + '.';
-
-      if(comentarios.length){
-        const label = document.createElement('div');
-        label.className = 'label';
-        label.textContent = 'Comentarios recientes';
-        commentsBox.appendChild(label);
-
-        comentarios.slice(0,3).forEach(c => {
-          const div = document.createElement('div');
-          div.className = 'comment-chip';
-          div.textContent = c;
-          commentsBox.appendChild(div);
-        });
-      }
-
-      apiStatus.className = 'api-status ok';
-      apiStatus.textContent = `✓ Datos actualizados automáticamente · ${r.sesiones || 0} sesiones`;
-
-    }catch(error){
-      document.getElementById('sumMolestias').textContent = 'Sin conexión con registros';
-      document.getElementById('sumDificultades').textContent = 'Sin conexión con registros';
-      document.getElementById('sumPositivo').textContent = 'Sin conexión con registros';
-      document.getElementById('sumFoco').textContent = 'Puedes continuar el seguimiento manualmente.';
-      apiStatus.className = 'api-status error';
-      apiStatus.textContent = 'No fue posible cargar los datos automáticos.';
-      console.error(error);
-    }
-  }
-
-  function showStep(index){
-    current = Math.max(0, Math.min(index, steps.length - 1));
-    steps.forEach((s,i)=>s.classList.toggle('active', i===current));
-
-    stepLabel.textContent = `Paso ${current + 1} de ${steps.length}`;
-    stepName.textContent = stepNames[current];
-    progressBar.style.width = `${((current + 1) / steps.length) * 100}%`;
-
-    backBtn.style.visibility = current === 0 ? 'hidden' : 'visible';
-    nextBtn.style.display = current === steps.length - 1 ? 'none' : 'inline-block';
-    finishBtn.style.display = current === steps.length - 1 ? 'inline-block' : 'none';
-
-    if(current === steps.length - 1){
-      renderFinalSummary();
-    }
-
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
-
-  function collect(){
-    const respuestas = {};
-    textareas.forEach(t => respuestas[t.dataset.q] = t.value.trim());
-
-    return {
-      cliente: cliente.value,
-      fecha: new Date().toISOString(),
-      respuestas
+    const QUESTIONS = {
+      1:"¿Cómo te sentiste esta semana en general?",
+      2:"Comparado con la semana anterior, ¿cómo estuvieron tus molestias?",
+      3:"¿Hubo algún ejercicio que te molestara, costara o generara inseguridad?",
+      4:"¿Notaste alguna mejora en tu día a día esta semana?",
+      5:"¿Qué deberíamos ajustar para la próxima semana?"
     };
-  }
 
-  function saveDraft(){
-    localStorage.setItem(storageKey(), JSON.stringify(collect()));
-    saveMsg.textContent = '✓ Borrador guardado en este navegador';
-    setTimeout(()=>saveMsg.textContent='',2200);
-  }
+    function storageKey(){
+      return "movesmart-semana-" +
+        cliente.value.toLowerCase().replace(/\s+/g,"-");
+    }
 
-  function loadDraft(){
-    const raw = localStorage.getItem(storageKey());
-    textareas.forEach(t => t.value='');
-    if(!raw) return;
+    async function renderClient(){
+      const apiStatus = document.getElementById("apiStatus");
+      const commentsBox = document.getElementById("commentsBox");
 
-    try{
-      const d = JSON.parse(raw);
-      textareas.forEach(t => {
-        t.value = d?.respuestas?.[t.dataset.q] || '';
+      document.getElementById("sumMolestias").textContent = "Cargando...";
+      document.getElementById("sumDolor").textContent = "Cargando...";
+      document.getElementById("statSesiones").textContent = "—";
+      document.getElementById("statEsfuerzo").textContent = "—";
+      document.getElementById("statSensacion").textContent = "—";
+      document.getElementById("statModo").textContent = "—";
+      commentsBox.innerHTML = "";
+
+      apiStatus.className = "api-status";
+      apiStatus.textContent = "Cargando datos reales del cliente...";
+
+      try{
+        const url =
+          `${API_URL}?accion=resumenSeguimiento&cliente=${encodeURIComponent(cliente.value)}`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if(!data.ok){
+          throw new Error(data.error || "Error al consultar los datos");
+        }
+
+        const r = data.resumen || {};
+        const comentarios =
+          Array.isArray(r.comentariosRecientes)
+            ? r.comentariosRecientes
+            : [];
+
+        document.getElementById("sumMolestias").textContent =
+          r.zonaPreviaMasFrecuente ||
+          r.zonaMasFrecuente ||
+          "Sin datos";
+
+        document.getElementById("sumDolor").textContent =
+          r.estadoDolorMasFrecuente ||
+          "Sin datos";
+
+        document.getElementById("statSesiones").textContent =
+          r.sesiones ?? "—";
+
+        document.getElementById("statEsfuerzo").textContent =
+          r.esfuerzoPromedio ?? "—";
+
+        document.getElementById("statSensacion").textContent =
+          r.sensacionMasFrecuente || "—";
+
+        document.getElementById("statModo").textContent =
+          r.modoMasFrecuente || "—";
+
+        if(comentarios.length){
+          const label = document.createElement("div");
+          label.className = "label";
+          label.textContent = "Comentarios recientes";
+          commentsBox.appendChild(label);
+
+          comentarios.slice(0,3).forEach(c => {
+            const div = document.createElement("div");
+            div.className = "comment-chip";
+            div.textContent = c;
+            commentsBox.appendChild(div);
+          });
+        }
+
+        apiStatus.className = "api-status ok";
+        apiStatus.textContent =
+          `✓ Datos actualizados automáticamente · ${r.sesiones || 0} sesiones registradas`;
+
+      }catch(error){
+        document.getElementById("sumMolestias").textContent =
+          "Sin conexión con registros";
+
+        document.getElementById("sumDolor").textContent =
+          "Sin conexión con registros";
+
+        apiStatus.className = "api-status error";
+        apiStatus.textContent =
+          "No fue posible cargar los datos automáticos. Puedes continuar manualmente.";
+
+        console.error(error);
+      }
+    }
+
+    function showStep(index){
+      current =
+        Math.max(
+          0,
+          Math.min(index, steps.length - 1)
+        );
+
+      steps.forEach(
+        (s,i) =>
+          s.classList.toggle(
+            "active",
+            i === current
+          )
+      );
+
+      stepLabel.textContent =
+        `Paso ${current + 1} de ${steps.length}`;
+
+      stepName.textContent =
+        stepNames[current];
+
+      progressBar.style.width =
+        `${((current + 1) / steps.length) * 100}%`;
+
+      backBtn.style.visibility =
+        current === 0
+          ? "hidden"
+          : "visible";
+
+      nextBtn.style.display =
+        current === steps.length - 1
+          ? "none"
+          : "inline-block";
+
+      finishBtn.style.display =
+        current === steps.length - 1
+          ? "inline-block"
+          : "none";
+
+      if(current === steps.length - 1){
+        renderFinalSummary();
+      }
+
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
       });
-    }catch(e){}
-  }
+    }
 
-  function renderFinalSummary(){
-    finalSummary.innerHTML = '';
-    textareas.forEach(t => {
-      const q = t.dataset.q;
-      const answer = t.value.trim();
+    function collect(){
+      const respuestas = {};
 
-      const item = document.createElement('div');
-      item.className = 'final-item';
-      item.innerHTML = `
-        <div class="final-q">${q}. ${QUESTIONS[q]}</div>
-        <div class="final-a ${answer ? '' : 'empty'}">${answer || 'Sin notas registradas'}</div>
-      `;
-      finalSummary.appendChild(item);
-    });
-  }
+      textareas.forEach(
+        t =>
+          respuestas[t.dataset.q] =
+            t.value.trim()
+      );
 
-  function finish(){
-    const data = collect();
-    localStorage.setItem(storageKey(), JSON.stringify(data));
-    saveMsg.textContent = `✓ Seguimiento de ${data.cliente} guardado correctamente`;
-  }
+      const molestiasRadio =
+        document.querySelector(
+          'input[name="molestias_cambio"]:checked'
+        );
 
-  nextBtn.addEventListener('click', ()=>showStep(current + 1));
-  backBtn.addEventListener('click', ()=>showStep(current - 1));
-  saveDraftBtn.addEventListener('click', saveDraft);
-  finishBtn.addEventListener('click', finish);
+      return {
+        cliente:cliente.value,
+        fecha:new Date().toISOString(),
+        molestias_cambio:
+          molestiasRadio
+            ? molestiasRadio.value
+            : "",
+        respuestas
+      };
+    }
 
-  cliente.addEventListener('change', ()=>{
+    function saveDraft(){
+      localStorage.setItem(
+        storageKey(),
+        JSON.stringify(
+          collect()
+        )
+      );
+
+      saveMsg.textContent =
+        "✓ Borrador guardado en este navegador";
+
+      setTimeout(
+        () => saveMsg.textContent = "",
+        2200
+      );
+    }
+
+    function loadDraft(){
+      const raw =
+        localStorage.getItem(
+          storageKey()
+        );
+
+      textareas.forEach(
+        t => t.value = ""
+      );
+
+      document
+        .querySelectorAll(
+          'input[name="molestias_cambio"]'
+        )
+        .forEach(
+          r => r.checked = false
+        );
+
+      if(!raw) return;
+
+      try{
+        const d =
+          JSON.parse(raw);
+
+        textareas.forEach(
+          t => {
+            t.value =
+              d?.respuestas?.[
+                t.dataset.q
+              ] || "";
+          }
+        );
+
+        if(d?.molestias_cambio){
+          const radio =
+            document.querySelector(
+              `input[name="molestias_cambio"][value="${d.molestias_cambio}"]`
+            );
+
+          if(radio){
+            radio.checked = true;
+          }
+        }
+      }catch(e){}
+    }
+
+    function renderFinalSummary(){
+      finalSummary.innerHTML = "";
+
+      const d = collect();
+
+      Object.entries(QUESTIONS)
+        .forEach(
+          ([q,question]) => {
+            const answer =
+              d.respuestas[q] || "";
+
+            const item =
+              document.createElement(
+                "div"
+              );
+
+            item.className =
+              "final-item";
+
+            let extra = "";
+
+            if(q === "2" && d.molestias_cambio){
+              extra =
+                `<strong>${d.molestias_cambio}</strong>${answer ? " · " : ""}`;
+            }
+
+            item.innerHTML = `
+              <div class="final-q">${q}. ${question}</div>
+              <div class="final-a ${answer || extra ? "" : "empty"}">
+                ${extra}${answer || (!extra ? "Sin notas registradas" : "")}
+              </div>
+            `;
+
+            finalSummary
+              .appendChild(item);
+          }
+        );
+    }
+
+    function finish(){
+      const data = collect();
+
+      localStorage.setItem(
+        storageKey(),
+        JSON.stringify(data)
+      );
+
+      saveMsg.textContent =
+        `✓ Semana de ${data.cliente} guardada en este navegador`;
+    }
+
+    nextBtn.addEventListener(
+      "click",
+      () => showStep(current + 1)
+    );
+
+    backBtn.addEventListener(
+      "click",
+      () => showStep(current - 1)
+    );
+
+    saveDraftBtn.addEventListener(
+      "click",
+      saveDraft
+    );
+
+    finishBtn.addEventListener(
+      "click",
+      finish
+    );
+
+    cliente.addEventListener(
+      "change",
+      () => {
+        renderClient();
+        loadDraft();
+      }
+    );
+
     renderClient();
     loadDraft();
-  });
-
-  renderClient();
-  loadDraft();
-  showStep(0);
-</script>
+    showStep(0);
+  </script>
 </body>
 </html>
